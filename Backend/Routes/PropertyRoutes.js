@@ -1,32 +1,23 @@
 const express = require("express");
 const router = express.Router();
-const multer = require("multer");
-const cloudinary = require("cloudinary");
 const Property = require("../Models/Property");
 const checkAuth = require("../Middleware/auth");
 
-const upload = multer({ dest: "uploads/" });
-
-//cloudinary
-cloudinary.v2.config({
-  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
-  api_key: process.env.CLOUDINARY_API_KEY,
-  api_secret: process.env.CLOUDINARY_API_SECRET,
+// Cloudinary config (keep in case you want backend uploads later)
+const cloudinary = require("cloudinary").v2;
+cloudinary.config({
+  cloud_name: process.env.CLOUD_NAME,
+  api_key: process.env.CLOUD_KEY,
+  api_secret: process.env.CLOUD_SECRET,
 });
 
-
-
 // Create property
-router.post("/", checkAuth, upload.array("images"), async (req,res)=>{
-  try{
-    const { title, type, area, city, price, whatsappNumber } = req.body;
-    const images = [];
+router.post("/", checkAuth, async (req, res) => {
+  try {
+    const { title, type, area, city, price, whatsappNumber, images } = req.body;
 
-    if(req.files){
-      for(const file of req.files){
-        const result = await cloudinary.v2.uploader.upload(file.path, { folder: "properties" });
-        images.push(result.secure_url);
-      }
+    if (!images || !Array.isArray(images)) {
+      return res.status(400).json({ message: "Images must be an array of URLs" });
     }
 
     const property = await Property.create({
@@ -37,30 +28,29 @@ router.post("/", checkAuth, upload.array("images"), async (req,res)=>{
       city,
       price,
       whatsappNumber,
-      images
+      images,
     });
 
     res.status(201).json(property);
-  }catch(error){
+  } catch (error) {
     res.status(400).json({ message: error.message });
   }
 });
 
 // Get all properties
-router.get("/", async (req,res)=>{
-  const properties = await Property.find().populate("user","name email");
+router.get("/", async (req, res) => {
+  const properties = await Property.find().populate("user", "name email");
   res.json(properties);
 });
 
 // Get property by ID
-router.get("/:id", async (req,res)=>{
-  const property = await Property.findById(req.params.id).populate("user","name email");
-  if(property) res.json(property);
+router.get("/:id", async (req, res) => {
+  const property = await Property.findById(req.params.id).populate("user", "name email");
+  if (property) res.json(property);
   else res.status(404).json({ message: "Property not found" });
 });
 
-
-// ✅ Update property (only owner)
+// Update property (only owner)
 router.put("/:id", checkAuth, async (req, res) => {
   try {
     const property = await Property.findById(req.params.id);
@@ -77,7 +67,7 @@ router.put("/:id", checkAuth, async (req, res) => {
   }
 });
 
-// ✅ Delete property (only owner)
+// Delete property (only owner)
 router.delete("/:id", checkAuth, async (req, res) => {
   try {
     const property = await Property.findById(req.params.id);
