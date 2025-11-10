@@ -3,7 +3,7 @@ const router = express.Router();
 const Property = require("../Models/Property");
 const checkAuth = require("../Middleware/auth");
 
-// Cloudinary config (keep in case you want backend uploads later)
+// Cloudinary config
 const cloudinary = require("cloudinary").v2;
 cloudinary.config({
   cloud_name: process.env.CLOUD_NAME,
@@ -63,7 +63,7 @@ router.put("/:id", checkAuth, async (req, res) => {
     const updated = await Property.findByIdAndUpdate(req.params.id, req.body, { new: true });
     res.json(updated);
   } catch (error) {
-    res.status(500).json({ message: "Server error" });
+    res.status(500).json({ message: error.message });
   }
 });
 
@@ -80,7 +80,7 @@ router.delete("/:id", checkAuth, async (req, res) => {
     await property.deleteOne();
     res.json({ message: "Property removed" });
   } catch (error) {
-    res.status(500).json({ message: "Server error" });
+    res.status(500).json({ message: error.message });
   }
 });
 

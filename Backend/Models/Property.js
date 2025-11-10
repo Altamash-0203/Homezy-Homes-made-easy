@@ -1,63 +1,45 @@
-let mongoose=require("mongoose")
+const mongoose = require("mongoose");
 
-const propertySchema = new mongoose.Schema(
-  {
-    // user reference (property owner or agent)
-    user: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "homzyUsers",
-    },
-
-    // property title
-    title: {
-      type: String,
-      required:true,
-    },
-
-    // property type (1BHK, 2BHK, Villa, etc.)
-    type: {
-      type: String,
-      required: true
-    },
-
-    // area (city area)
-    area: {
-      type: String,
-      required:true
-    },
-
-    // city name
-    city: {
-      type: String,
-      required:true,
-    },
-
-    // property price
-    price: {
-      type: Number,
-      required: true,
-    },
-
-    // WhatsApp number for inquiries
-    whatsappNumber: {
-      type: Number,
-      required:true
-    },
-
-    // multiple property images (URLs from Cloudinary)
-    images: [
-      {
-        type: String,
-      },
-    ],
-
-    createdAt: {
-      type: Date,
-      default: Date.now,
-    },
+const propertySchema = new mongoose.Schema({
+  user: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Homzyusers",
+    required: true
   },
-);
+  title: {
+    type: String,
+    required: true,
+  },
+  type: {
+    type: String,
+    required: true,
+  },
+  area: {
+    type: String,
+    required: true,
+  },
+  city: {
+    type: String,
+    required: true,
+  },
+  price: {
+    type: Number,
+    required: true,
+  },
+  whatsappNumber: {
+    type: Number,
+    required: true,
+  },
+  images: [
+    {
+      type: String,
+    },
+  ],
+  createdAt: {
+    type: Date,
+    default: Date.now,
+  },
+});
 
 const Property = mongoose.model("homzyProperties", propertySchema);
-
-module.exports=Property
+module.exports = Property;
