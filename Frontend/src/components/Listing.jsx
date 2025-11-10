@@ -25,7 +25,7 @@ function Listing() {
 
   const fetchProperties = async () => {
     try {
-      const res = await axios.get("https://homzy-backend.onrender.com/api/properties");
+      const res = await axios.get("http://localhost:5000/api/properties");
       setData(res.data);
       setFiltredData(res.data)
       console.log(res.data)
