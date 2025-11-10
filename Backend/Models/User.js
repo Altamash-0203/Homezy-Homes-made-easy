@@ -34,6 +34,6 @@ userSchema.methods.matchPassword=async function(enteredPassword) {
     return await bcrypt.compare(enteredPassword,this.password)
 }
 
-let User=mongoose.model("HomzyUsers",userSchema);
+let User=mongoose.model("homzyUsers",userSchema);
 
 module.exports=User

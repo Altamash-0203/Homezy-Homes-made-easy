@@ -5,7 +5,7 @@ const propertySchema = new mongoose.Schema(
     // user reference (property owner or agent)
     user: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "HomzyUsers",
+      ref: "homzyUsers",
     },
 
     // property title
@@ -58,6 +58,6 @@ const propertySchema = new mongoose.Schema(
   },
 );
 
-const Property = mongoose.model("HomzyProperties", propertySchema);
+const Property = mongoose.model("homzyProperties", propertySchema);
 
 module.exports=Property
