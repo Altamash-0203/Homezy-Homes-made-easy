@@ -10,7 +10,7 @@ const app = express();
 
 // CORS - allow frontend URLs
 app.use(cors({
-  origin: ["http://localhost:3000","http://localhost:5173", "https://sweet-meringue-710bd4.netlify.app/","https://homezy-homes-made-easy-gku5hm4ek.vercel.app/"]
+  origin: ["http://localhost:3000","http://localhost:5173", "https://sweet-meringue-710bd4.netlify.app/","https://homezy-homes-made-easy-ona93b5ew.vercel.app/"]
 }));
 
 app.use(express.json());
