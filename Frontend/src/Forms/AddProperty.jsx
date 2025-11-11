@@ -53,7 +53,7 @@ function AddProperty() {
     try {
       const token = localStorage.getItem("homzyToken");
       await axios.post(
-        "http://localhost:5000/api/properties",
+        "https://homzy-backend.onrender.com/api/properties",
         { ...formData, images },
         { headers: { Authorization: `Bearer ${token}` } }
       );
