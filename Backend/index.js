@@ -10,7 +10,7 @@ const app = express();
 
 // CORS - allow frontend URLs
 app.use(cors({
-  origin: ["http://localhost:3000","http://localhost:5173", "https://your-frontend.vercel.app"]
+  origin: ["http://localhost:3000","http://localhost:5173", "https://sweet-meringue-710bd4.netlify.app/"]
 }));
 
 app.use(express.json());
