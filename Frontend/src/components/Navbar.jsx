@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import logo from "../assets/Logo.png";
 
 function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
@@ -16,7 +17,7 @@ function Navbar() {
     <div className="w-auto flex justify-between p-5 items-center bg-black text-white mt-4 h-15 m-5 rounded-4xl py-3.5 relative">
       {/* Logo */}
       <div className="navbar-logo">
-        <img className="w-40" src="/src/assets/Logo.png" alt="Logo" />
+        <img className="w-40" src={logo} alt="Logo" />
       </div>
 
       {/* Hamburger Button */}
