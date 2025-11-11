@@ -27,7 +27,7 @@ function Signup() {
 
     try {
       setLoading(true);
-      const { data } = await axios.post("https://homzy-backend.onrender.com/api/users/signup", {
+      const { data } = await axios.post("https://homzy-backend.onrender.com/api/users/signup/", {
         name,
         email,
         password,
