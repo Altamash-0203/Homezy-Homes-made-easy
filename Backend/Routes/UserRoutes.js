@@ -3,7 +3,7 @@ const router = express.Router();
 const User = require("../Models/User");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
-const protect=require("../Middleware/auth")
+const protect = require("../Middleware/auth");
 
 // Generate JWT
 const generateToken = (userId) => {
@@ -13,7 +13,6 @@ const generateToken = (userId) => {
 // Signup
 router.post("/signup", async (req, res) => {
   const { name, email, password } = req.body;
-
   try {
     const userExists = await User.findOne({ email });
     if (userExists) return res.status(400).json({ message: "User already exists" });
@@ -34,7 +33,6 @@ router.post("/signup", async (req, res) => {
 // Login
 router.post("/login", async (req, res) => {
   const { email, password } = req.body;
-
   try {
     const user = await User.findOne({ email });
     if (!user) return res.status(401).json({ message: "User not found" });
@@ -55,11 +53,10 @@ router.post("/login", async (req, res) => {
   }
 });
 
-
+// Add favorite
 router.post("/add-favorite", protect, async (req, res) => {
   try {
     const { propertyId } = req.body;
-
     const user = await User.findById(req.user._id);
 
     if (!user.favorites.includes(propertyId)) {
@@ -71,6 +68,18 @@ router.post("/add-favorite", protect, async (req, res) => {
       message: "Property added to favorites",
       favorites: user.favorites,
     });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
+// Get user's favorites
+router.get("/favorites", protect, async (req, res) => {
+  try {
+    const user = await User.findById(req.user._id).populate("favorites");
+    if (!user) return res.status(404).json({ message: "User not found" });
+
+    res.status(200).json({ favorites: user.favorites });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }

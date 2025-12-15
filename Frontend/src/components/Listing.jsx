@@ -74,33 +74,32 @@ function Listing() {
   // -------------------------------
   // Add to Favorites
   // -------------------------------
-  const addToFav = async (propertyId) => {
-    try {
-      const token = localStorage.getItem("token");
+ const addToFav = async (propertyId) => {
+  try {
+    const token = localStorage.getItem("homzyToken");
+    console.log("Token for addToFav:", token); // Confirm token exists
 
-      if (!token) {
-        alert("Please login first");
-        navigate("/login");
-        return;
-      }
-
-      await axios.post(
-        "https://homzy-backend.onrender.com/api/users/add-favorite",
-        { propertyId },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-
-      alert("Property added to favorites ❤️");
-    } catch (error) {
-      console.error(error);
-      alert("Failed to add to favorites");
+    if (!token) {
+      alert("Please login first");
+      return;
     }
-  };
 
+    await axios.post(
+      "https://homzy-backend.onrender.com/api/users/add-favorite",
+      { propertyId },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+
+    alert("Added to favorites ❤️");
+  } catch (error) {
+    console.error("Add to fav error:", error.response || error);
+    alert("Failed to add favorite");
+  }
+};
   return (
     <>
       {/* ================= Filters ================= */}
