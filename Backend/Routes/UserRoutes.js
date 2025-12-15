@@ -54,4 +54,25 @@ router.post("/login", async (req, res) => {
   }
 });
 
+
+router.post("/add-favorite", protect, async (req, res) => {
+  try {
+    const { propertyId } = req.body;
+
+    const user = await User.findById(req.user._id);
+
+    if (!user.favorites.includes(propertyId)) {
+      user.favorites.push(propertyId);
+      await user.save();
+    }
+
+    res.status(200).json({
+      message: "Property added to favorites",
+      favorites: user.favorites,
+    });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
 module.exports = router;

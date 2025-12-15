@@ -15,6 +15,12 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+   favorites: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Property", // your property model name
+    },
+  ],
 });
 
 // Hash password before saving
