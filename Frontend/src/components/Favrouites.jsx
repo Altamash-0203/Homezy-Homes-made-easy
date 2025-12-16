@@ -29,7 +29,7 @@ function Favrioutes() {
           }
         );
 
-        setFavorites(res.data); // set response data to state
+        setFavorites(res.data.favorites || []); // set response data to state
       } catch (err) {
         console.error("Error fetching favorites:", err);
         setError("Failed to load favorites");
@@ -43,11 +43,17 @@ function Favrioutes() {
 
   // Loading state
   if (loading)
-    return <p className="p-5 text-center text-xl font-semibold">Loading favorites...</p>;
+    return (
+      <p className="p-5 text-center text-xl font-semibold">
+        Loading favorites...
+      </p>
+    );
 
   // Error state
   if (error)
-    return <p className="p-5 text-center text-red-500 font-semibold">{error}</p>;
+    return (
+      <p className="p-5 text-center text-red-500 font-semibold">{error}</p>
+    );
 
   return (
     <>
@@ -100,10 +106,18 @@ function Favrioutes() {
             </div>
 
             <button
-              onClick={() => navigate(`/${property._id}`)}
-              className="p-2 w-full bg-violet-600 text-white rounded text-center"
+              onClick={() => {
+                if (!property.whatsappNumber) {
+                  alert("WhatsApp number not available for this property.");
+                  return;
+                }
+
+                const whatsappUrl = `https://wa.me/${property.whatsappNumber}`;
+                window.open(whatsappUrl, "_blank"); // open in new tab
+              }}
+              className="p-2 w-full bg-green-600 text-white rounded text-center"
             >
-              See Detail
+              Ask on Whatsapp 💬
             </button>
           </div>
         ))}

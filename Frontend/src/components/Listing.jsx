@@ -1,6 +1,6 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 function Listing() {
   const [data, setData] = useState([]);
@@ -12,14 +12,6 @@ function Listing() {
     maxPrice: "",
   });
 
-  const navigate = useNavigate();
-
-  // -------------------------------
-  // Navigate to property detail
-  // -------------------------------
-  const goToDetail = (id) => {
-    navigate(`/${id}`);
-  };
 
   // -------------------------------
   // Fetch all properties
@@ -74,32 +66,32 @@ function Listing() {
   // -------------------------------
   // Add to Favorites
   // -------------------------------
- const addToFav = async (propertyId) => {
-  try {
-    const token = localStorage.getItem("homzyToken");
-    console.log("Token for addToFav:", token); // Confirm token exists
+  const addToFav = async (propertyId) => {
+    try {
+      const token = localStorage.getItem("homzyToken");
+      console.log("Token for addToFav:", token); // Confirm token exists
 
-    if (!token) {
-      alert("Please login first");
-      return;
-    }
-
-    await axios.post(
-      "https://homzy-backend.onrender.com/api/users/add-favorite",
-      { propertyId },
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
+      if (!token) {
+        alert("Please login first");
+        return;
       }
-    );
 
-    alert("Added to favorites ❤️");
-  } catch (error) {
-    console.error("Add to fav error:", error.response || error);
-    alert("Failed to add favorite");
-  }
-};
+      await axios.post(
+        "https://homzy-backend.onrender.com/api/users/add-favorite",
+        { propertyId },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      alert("Added to favorites ❤️");
+    } catch (error) {
+      console.error("Add to fav error:", error.response || error);
+      alert("Failed to add favorite");
+    }
+  };
   return (
     <>
       {/* ================= Filters ================= */}
@@ -208,10 +200,18 @@ function Listing() {
               </button>
 
               <button
-                onClick={() => goToDetail(p._id)}
-                className="p-2 w-full bg-violet-600 text-white rounded"
+                onClick={() => {
+                  if (!p.whatsappNumber) {
+                    alert("WhatsApp number not available for this property.");
+                    return;
+                  }
+
+                  const whatsappUrl = `https://wa.me/${p.whatsappNumber}`;
+                  window.open(whatsappUrl, "_blank"); // open in new tab
+                }}
+                className="p-2 w-full bg-green-600 text-white rounded text-center"
               >
-                See Detail
+                Ask on Whatsapp 💬
               </button>
             </div>
           </div>
